@@ -24,16 +24,30 @@ public class CodeDocxGenerator {
     private List<String> FILE_TYPES;// 需要查找的文件类型
     private int totalLines = 0;// 代码总行数
     private final int PAGE_LINES = 53;// 文档每页行数
-    private final int MAX_LINES = PAGE_LINES * 60; // 限制代码的最大行数
+//    private final int MAX_LINES = PAGE_LINES * 60; // 限制代码的最大行数
+    private final int MAX_LINES = PAGE_LINES * 100; // 限制代码的最大行数,修改为100页了
     private final long PAGE_MARGIN_VERTICAL = 1080L;// 页面上下边距
     private final long PAGE_MARGIN_HORIZONTAL = 720L;// 页面左右边距
-    private boolean IS_HALF = false;// 文档是否分为前后各30页
+    private boolean IS_HALF = true;// 文档是否分为前后各30页
     private List<String> IGNORE_DIRS;// 需要扫描时忽略的文件夹
 
-//    public static void main(String[] args) {
-//        CodeDocxGenerator cdg = new CodeDocxGenerator();
-//        cdg.start(args,null);
-//    }
+    public static void main(String[] args) {
+        CodeDocxGenerator cdg = new CodeDocxGenerator();
+        args = new String[5];
+        //项目路径
+//        args[0] = "D:\\work\\MPS\\mps-phoenix\\mps-phoenix-core\\src\\main\\java";
+        args[0] = "D:\\work\\MPS\\mps-server\\mps-server-core\\src\\main\\java\\net\\veryprint\\mps";
+        //软件名称
+        args[1] = "VARYPRINT";
+        //版本号
+        args[2] = "v1.0.1";
+        //是否分前后
+        args[3] = "true";
+        //源代码文件类型
+        args[4] = ".java";
+        Arrays.stream(args).forEach(LogUtils::println);
+        cdg.start(args,null);
+    }
 
     public CodeDocxGenerator(){}
 
@@ -59,7 +73,7 @@ public class CodeDocxGenerator {
             }
         }
         IGNORE_DIRS = ignoreDirs == null ? new ArrayList<>() : ignoreDirs;
-        DOC_SAVE_PATH = PROJECT_PATH + "\\SourceCode.docx";
+        DOC_SAVE_PATH = "D:\\work\\MPS\\软著申请\\代码文档" + "\\SourceCode.docx";
         LogUtils.println("获取参数成功");
         LogUtils.println("源代码项目目录：" + PROJECT_PATH);
         LogUtils.println("软件名称：" + args[1]);

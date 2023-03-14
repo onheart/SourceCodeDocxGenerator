@@ -135,16 +135,25 @@ public class FileUtils {
         if(subFiles == null || subFiles.length <= 0){
             return files;
         }
-        Arrays.stream(subFiles)
+        Arrays.stream(subFiles).sorted((f1,f2)->{
+                    if (f1.isFile()) {
+                        return -1;
+                    }
+                    if (f2.isFile()) {
+                        return 1;
+                    }
+                    return 1;
+                })
                 .forEach(
                         f -> {
+                            if(FileUtils.matchFile(f,fileTypes)){
+                                // 添加文件路径
+                                files.add(f.getAbsolutePath());
+                            }
                             // 特殊目录过滤
                             if(f.isDirectory() && !f.getName().equals("build") && !f.getName().equals("zxing") && !isIgnoreDir(f,ignoreDirs)){
                                 // 继续迭代目录
                                 files.addAll(collectFilesFromDir(f.getAbsolutePath(),fileTypes,ignoreDirs));
-                            }else if(FileUtils.matchFile(f,fileTypes)){
-                                // 添加文件路径
-                                files.add(f.getAbsolutePath());
                             }
                         }
                 );
